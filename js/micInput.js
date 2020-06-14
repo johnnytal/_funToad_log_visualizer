@@ -78,8 +78,12 @@ function start_stream(stream){
 
 		 var scalingPulse = averageValue / 20;
 		 
-		 logo.scale.set(0.55 - averageValue / 500, 0.55 - averageValue / 500);
-		 logo.frame = frame; // logo.frame = Math.round(averageValue) * 3 - 8; //option B 
+		 if (averageValue > 15){
+		 	createLogos(largestFreq * 50, averageValue * 14);
+		 }
+		 
+		 //logo.scale.set(0.55 - averageValue / 500, 0.55 - averageValue / 500);
+		 //logo.frame = frame; // logo.frame = Math.round(averageValue) * 3 - 8; //option B 
 		 //logo.tint = 0xffffff * (largestFreq / 20) * (game.rnd.integerInRange(10, 50) / 100);
  
 		 pulse.alpha = largestValue / 400;
@@ -90,10 +94,10 @@ function start_stream(stream){
 		 pulse.angle++;
 
 		 if (isMobile()){
-			 if (scalingPulse >= 5 && !window.plugins.flashlight.isSwitchedOn()){
+			 if (scalingPulse >= 15 && !window.plugins.flashlight.isSwitchedOn()){
 			 	window.plugins.flashlight.switchOn();
 			 }
-			 else if (scalingPulse < 5 && window.plugins.flashlight.isSwitchedOn()){
+			 else if (scalingPulse < 15 && window.plugins.flashlight.isSwitchedOn()){
 		 		window.plugins.flashlight.switchOff();	 	
 			 }
 		 }

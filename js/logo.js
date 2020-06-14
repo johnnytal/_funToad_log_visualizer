@@ -9,11 +9,8 @@ logoMain.prototype = {
     	pulse.x = game.world.centerX;
     	pulse.y = game.world.centerY;
     	
-    	logo = game.add.sprite(0, 0, 'logo_spritesheet');
-    	logo.anchor.set(.5, .5);
-    	logo.x = game.world.centerX;
-    	logo.y = game.world.centerY;
-    	
+    	createLogos();
+
     	pulse.alpha = 0;
     	
     	if (isMobile()){
@@ -26,6 +23,18 @@ logoMain.prototype = {
     	}
     }
 };
+
+function createLogos(StartX, startY){
+	logo = game.add.sprite(StartX, HEIGHT - startY, 'logo_spritesheet');
+	
+	//logo.anchor.set(.5, .5);
+	//logo.x = game.world.centerX;
+	//logo.y = game.world.centerY;	
+	logo.frame = frame;
+
+    tween = game.add.tween(logo).to( { alpha: 0 }, 350, "Linear", true);
+    tween.onComplete.add(function(){ logo.destroy; }, this);
+}
 
 function startMic(){
 	try{
