@@ -74,41 +74,68 @@ function start_stream(stream){
 		 }
 		 
 		 if (frame < 0) frame = 0;
-		 else if (frame > 35) frame = 35;
+		 else if (frame > 32) frame = 32;
 
-		 var scalingPulse = averageValue / 20;
-		 
-		 if (averageValue > 15){
-		 	createLogos(largestFreq * 50, averageValue * 14);
+		 if (averageValue > config.SENSITIVITY){
+		 	if (config.ASCENDING_LOGOS){
+		 		ascendLogos(largestFreq * 200, averageValue * 14);
+		 	}
+		 	
+			if (config.DROPPING_LOGOS){
+		 		droppingLogos(largestFreq * 200, averageValue * 14);
+		 	}
+ 		    middleLogo.frame = frame;
+		 }
+		 		
+		 if (config.GET_SMALLER){
+			middleLogo.scale.set(1 - averageValue / 100, 1 - averageValue / 100);
+		 }
+		 else{
+			middleLogo.scale.set(0.5 + averageValue / 25, 0.5 + averageValue / 25);
 		 }
 		 
-		 //logo.scale.set(0.55 - averageValue / 500, 0.55 - averageValue / 500);
-		 //logo.frame = frame; // logo.frame = Math.round(averageValue) * 3 - 8; //option B 
-		 //logo.tint = 0xffffff * (largestFreq / 20) * (game.rnd.integerInRange(10, 50) / 100);
- 
-		 pulse.alpha = largestValue / 400;
-		 pulse.scale.set(scalingPulse, scalingPulse);
-		 pulse.frame = 2;
-		 pulse.tint = 0xffffff * (largestFreq / 20) * (game.rnd.integerInRange(10, 50) / 100);
-		 
-		 pulse.angle++;
+		 if (config.TURN_AROUND){
+		 	middleLogo.angle += averageValue / 15;
+		 }
+		 else{
+		 	middleLogo.angle = 0;
+		 }
+
+		 pulse.frame = Math.round(averageValue * 5 / config.SENSITIVITY);
+		 //pulse.scale.set(1.43 + averageValue / 25, 3.254 + averageValue / 25);
 
 		 if (isMobile()){
-			 if (scalingPulse >= 15 && !window.plugins.flashlight.isSwitchedOn()){
+			 if (pulse.frame >= 22 && !window.plugins.flashlight.isSwitchedOn()){
 			 	window.plugins.flashlight.switchOn();
 			 }
-			 else if (scalingPulse < 15 && window.plugins.flashlight.isSwitchedOn()){
+			 else if (pulse.frame < 22 && window.plugins.flashlight.isSwitchedOn()){
 		 		window.plugins.flashlight.switchOff();	 	
 			 }
 		 }
+		 
+   	 	 if (!config.FLASHY){
+  	 	 	 pulse.visible = false;
+  	 	 }
+  	 	 else{
+  	 	 	pulse.visible = true;
+  	 	 }
  
-		 lastAverageValue = averageValue;
-		
-  	 	 blue = 255 - Math.round(averageValue * dominance);
-  	 	 if (blue > 255) blue = 255;
-  	 	 else if (blue < 0) blue = 0;
+		 if (config.COLORFUL){
+	 	 	 pulse.alpha = 0.5;
 
-  	 	 game.stage.backgroundColor = 'rgba(' + 0 + ', ' + 0 + ',' + blue + ',' + 0.2 + ')';
+	  	 	 value = Math.round(averageValue * 8);
+	  	 	 if (value > 255) value = 255;
+	  	 	 else if (value < 0) value = 0;
+	
+	  	 	 game.stage.backgroundColor = 'rgba(' + value + ', ' + value + ',' + value + ',' + 1 + ')';
+  	 	 }
+
+  	 	 else{
+  	 	 	 pulse.alpha = 1;
+  	 	 	 game.stage.backgroundColor = 0x000000;
+  	 	 }
+  	 	 
+  	 	 lastAverageValue = averageValue;
  	};
  }
 
