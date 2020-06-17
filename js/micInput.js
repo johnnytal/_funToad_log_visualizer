@@ -8,7 +8,8 @@ largestFreq = 0;
 largestValue = 0;
 lastAverageValue = 0;
 
-frame = 12;
+logoFrame = 12;
+pulseFrame = 0;
 
 async function getDevices() {
 	const devices = await navigator.mediaDevices.enumerateDevices();
@@ -55,26 +56,30 @@ function start_stream(stream){
       	 var array = new Uint8Array(analyserNode.frequencyBinCount);
       	 analyserNode.getByteFrequencyData(array);
 
-         for (var i = 0; i < AMOUNT; i++) {
+         for (var i = 0; i < array.length; i++) {
         	 averageValue += array[i];
          }
-         averageValue = averageValue / AMOUNT;
+         averageValue = averageValue / array.length;
 
          largestValue = Math.max.apply(null, array);
         
          largestFreq = array.indexOf(largestValue);
 
 		 dominance = largestValue / averageValue;
+		 
+		 pulse.visible = config.FLASHY;
+		 middleLogo.visible = config.SHOW_MIDDLE_LOGO;
+		 animatedLogo.visible = config.SHOW_ANIMATED_LOGO;
 
 		 if (averageValue > lastAverageValue){
-			 frame++;
+			 logoFrame++;
 		 }
 		 else if (averageValue < lastAverageValue){
-			 frame--;
+			 logoFrame--;
 		 }
 		 
-		 if (frame < 0) frame = 0;
-		 else if (frame > 32) frame = 32;
+		 if (logoFrame < 0) logoFrame = 0;
+		 else if (logoFrame > 42) logoFrame = 42;
 
 		 if (averageValue > config.SENSITIVITY){
 		 	if (config.ASCENDING_LOGOS){
@@ -84,14 +89,14 @@ function start_stream(stream){
 			if (config.DROPPING_LOGOS){
 		 		droppingLogos(largestFreq * 200, averageValue * 14);
 		 	}
- 		    middleLogo.frame = frame;
+ 		    middleLogo.frame = logoFrame;
 		 }
 		 		
 		 if (config.GET_SMALLER){
 			middleLogo.scale.set(1 - averageValue / 100, 1 - averageValue / 100);
 		 }
 		 else{
-			middleLogo.scale.set(0.5 + averageValue / 25, 0.5 + averageValue / 25);
+			middleLogo.scale.set(0.7 + averageValue / 32, 0.7 + averageValue / 32);
 		 }
 		 
 		 if (config.TURN_AROUND){
@@ -100,26 +105,26 @@ function start_stream(stream){
 		 else{
 		 	middleLogo.angle = 0;
 		 }
-
-		 pulse.frame = Math.round(averageValue * 5 / config.SENSITIVITY);
+		 
+		 pulseFrame = Math.round(averageValue * 8 / config.SENSITIVITY);
+		 if (pulseFrame > 44) pulseFrame = 44;
+		 
+		 pulse.frame = pulseFrame;
+		 animatedLogo.frame = pulseFrame;
+		 
 		 //pulse.scale.set(1.43 + averageValue / 25, 3.254 + averageValue / 25);
 
-		 if (isMobile()){
-			 if (pulse.frame >= 22 && !window.plugins.flashlight.isSwitchedOn()){
+		 if (isMobile()){ // flasher
+			 if (pulse.frame >= 40 && !window.plugins.flashlight.isSwitchedOn()){
 			 	window.plugins.flashlight.switchOn();
+			 	navigator.vibrate(3000);
 			 }
-			 else if (pulse.frame < 22 && window.plugins.flashlight.isSwitchedOn()){
-		 		window.plugins.flashlight.switchOff();	 	
+			 else if (pulse.frame < 40 && window.plugins.flashlight.isSwitchedOn()){
+		 		window.plugins.flashlight.switchOff();	
+		 		navigator.vibrate(0);
 			 }
 		 }
-		 
-   	 	 if (!config.FLASHY){
-  	 	 	 pulse.visible = false;
-  	 	 }
-  	 	 else{
-  	 	 	pulse.visible = true;
-  	 	 }
- 
+
 		 if (config.COLORFUL){
 	 	 	 pulse.alpha = 0.5;
 
