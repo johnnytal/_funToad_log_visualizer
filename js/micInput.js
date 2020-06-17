@@ -1,8 +1,6 @@
 var audioDevices;	
 var BUFF_SIZE = 16384;
 
-var AMOUNT = 100;
-
 averageValue = 0;
 largestFreq = 0;
 largestValue = 0;
@@ -59,37 +57,34 @@ function start_stream(stream){
          for (var i = 0; i < array.length; i++) {
         	 averageValue += array[i];
          }
+         
          averageValue = averageValue / array.length;
-
          largestValue = Math.max.apply(null, array);
-        
          largestFreq = array.indexOf(largestValue);
 
-		 dominance = largestValue / averageValue;
+		 //dominance = largestValue / averageValue;
 		 
 		 pulse.visible = config.FLASHY;
 		 middleLogo.visible = config.SHOW_MIDDLE_LOGO;
 		 animatedLogo.visible = config.SHOW_ANIMATED_LOGO;
 
-		 if (averageValue > lastAverageValue){
+		 if (averageValue > lastAverageValue && logoFrame < 42){
 			 logoFrame++;
 		 }
-		 else if (averageValue < lastAverageValue){
+		 else if (averageValue < lastAverageValue && logoFrame < 0){
 			 logoFrame--;
 		 }
-		 
-		 if (logoFrame < 0) logoFrame = 0;
-		 else if (logoFrame > 42) logoFrame = 42;
 
 		 if (averageValue > config.SENSITIVITY){
+		 	middleLogo.frame = logoFrame;
+		 	
 		 	if (config.ASCENDING_LOGOS){
-		 		ascendLogos(largestFreq * 200, averageValue * 14);
+		 		ascendLogos(largestFreq * (game.scale.width / 100), averageValue * 32);
 		 	}
 		 	
 			if (config.DROPPING_LOGOS){
-		 		droppingLogos(largestFreq * 200, averageValue * 14);
+		 		droppingLogos(largestFreq * (game.scale.width / 100), averageValue * 32);
 		 	}
- 		    middleLogo.frame = logoFrame;
 		 }
 		 		
 		 if (config.GET_SMALLER){
@@ -112,14 +107,12 @@ function start_stream(stream){
 		 pulse.frame = pulseFrame;
 		 animatedLogo.frame = pulseFrame;
 		 
-		 //pulse.scale.set(1.43 + averageValue / 25, 3.254 + averageValue / 25);
-
 		 if (isMobile()){ // flasher
-			 if (pulse.frame >= 40 && !window.plugins.flashlight.isSwitchedOn()){
+			 if (pulse.frame >= 38 && !window.plugins.flashlight.isSwitchedOn()){
 			 	window.plugins.flashlight.switchOn();
-			 	navigator.vibrate(3000);
+			 	navigator.vibrate(2000);
 			 }
-			 else if (pulse.frame < 40 && window.plugins.flashlight.isSwitchedOn()){
+			 else if (pulse.frame < 38 && window.plugins.flashlight.isSwitchedOn()){
 		 		window.plugins.flashlight.switchOff();	
 		 		navigator.vibrate(0);
 			 }
@@ -142,15 +135,6 @@ function start_stream(stream){
   	 	 
   	 	 lastAverageValue = averageValue;
  	};
- }
-
- function generateColor(value) {
-    var r = Math.round(value * 255),
-        g = Math.round((1 - Math.abs(0.5 - value)) * 255),
-        b = Math.round((1 - value) * 255);
-    var finalValue = (0xff000000 + 0x10000 * b + 256 * g + r).toString(16);
-
-    return '0x' + finalValue ;
 }
 
 function isMobile(){

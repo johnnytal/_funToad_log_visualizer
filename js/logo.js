@@ -8,8 +8,7 @@ var logoMain = function(game){
 		DROPPING_LOGOS: false,
 		FLASHY: true,
 		SHOW_MIDDLE_LOGO: true,
-		SHOW_ANIMATED_LOGO: false
-		
+		SHOW_ANIMATED_LOGO: false	
 	};
 };
 
@@ -80,11 +79,11 @@ function startGUI(){
     var gui = new dat.GUI({ width: 300 });
     gui.add(config, 'SHOW_MIDDLE_LOGO').name('Show middle logo');
     gui.add(config, 'SHOW_ANIMATED_LOGO').name('Show animated logo');
-    gui.add(config, 'COLORFUL').name('Whiten background');
-    gui.add(config, 'GET_SMALLER').name('Logo pumps smaller');
-    gui.add(config, 'TURN_AROUND').name('Logo turns around');
     gui.add(config, 'ASCENDING_LOGOS').name('Ascending logos');
     gui.add(config, 'DROPPING_LOGOS').name('Dropping logos');
+    gui.add(config, 'GET_SMALLER').name('Logo pumps smaller');
+    gui.add(config, 'TURN_AROUND').name('Logo turns around');
+    gui.add(config, 'COLORFUL').name('Whiten background');
     gui.add(config, 'FLASHY').name('Flashy background');
 	gui.add(config, 'SENSITIVITY', 1, 40).name('Sensitivity').step(1);
 	
