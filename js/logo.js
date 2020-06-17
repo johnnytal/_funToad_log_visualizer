@@ -2,7 +2,7 @@ var logoMain = function(game){
 	var gui;
 	
 	config = {
-		SENSITIVITY: 6,
+		SENSITIVITY: 5,
 		COLORFUL: false,
 		GET_SMALLER: true,
 		TURN_AROUND: false,

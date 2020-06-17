@@ -68,12 +68,15 @@ function start_stream(stream){
 		 middleLogo.visible = config.SHOW_MIDDLE_LOGO;
 		 animatedLogo.visible = config.SHOW_ANIMATED_LOGO;
 
-		 if (averageValue > lastAverageValue && logoFrame < 42){
+		 if (averageValue > lastAverageValue){
 			 logoFrame++;
 		 }
-		 else if (averageValue < lastAverageValue && logoFrame > 0){
+		 else if (averageValue < lastAverageValue){
 			 logoFrame--;
 		 }
+		 
+		 if (logoFrame < 0) logoFrame = 0;
+		 if (logoFrame > 42) logoFrame = 42;
 
 		 if (averageValue > config.SENSITIVITY){
 		 	middleLogo.frame = logoFrame;
@@ -88,10 +91,10 @@ function start_stream(stream){
 		 }
 		 		
 		 if (config.GET_SMALLER){
-			middleLogo.scale.set(1 - averageValue / 100, 1 - averageValue / 100);
+			middleLogo.scale.set(1 - averageValue / (95 + config.SENSITIVITY), 1 - averageValue / (95 + config.SENSITIVITY));
 		 }
 		 else{
-			middleLogo.scale.set(0.7 + averageValue / 32, 0.7 + averageValue / 32);
+			middleLogo.scale.set(0.7 + averageValue / (37 - config.SENSITIVITY), 0.7 + averageValue / (37 - config.SENSITIVITY));
 		 }
 		 
 		 if (config.TURN_AROUND){
