@@ -71,7 +71,7 @@ function start_stream(stream){
 		 if (averageValue > lastAverageValue && logoFrame < 42){
 			 logoFrame++;
 		 }
-		 else if (averageValue < lastAverageValue && logoFrame < 0){
+		 else if (averageValue < lastAverageValue && logoFrame > 0){
 			 logoFrame--;
 		 }
 
