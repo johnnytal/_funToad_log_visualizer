@@ -1,4 +1,4 @@
-window.onload = start;
+//window.onload = start;
 document.addEventListener("deviceready", start, false);
 
 function start(){
@@ -20,16 +20,13 @@ var boot = function(game){};
   
 boot.prototype = {
     create: function(){
+        this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 
-       //if (!this.game.device.desktop){
-            this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-
-            this.scale.maxWidth = window.innerWidth * window.devicePixelRatio;
-            this.scale.maxHeight = window.innerHeight * window.devicePixelRatio;
-            
-            this.scale.forceOrientation(true, false);
-      //  } 
+        this.scale.maxWidth = window.innerWidth * window.devicePixelRatio;
+        this.scale.maxHeight = window.innerHeight * window.devicePixelRatio;
         
+        this.scale.forceOrientation(true, false);
+
         game.state.start("Preloader"); 
     }
 };
