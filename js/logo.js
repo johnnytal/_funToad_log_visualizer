@@ -1,6 +1,8 @@
 var logoMain = function(game){
+	var gui;
+	
 	config = {
-		SENSITIVITY: 7,
+		SENSITIVITY: 6,
 		COLORFUL: false,
 		GET_SMALLER: true,
 		TURN_AROUND: false,
@@ -34,6 +36,11 @@ logoMain.prototype = {
     	createAnimatedLogo();
     	
     	startGUI();
+    },
+    update: function(){
+    	 if(game.input.activePointer.isDown){
+    	 	gui.close();
+    	 }
     }
 };
 
@@ -76,7 +83,7 @@ function ascendLogos(StartX, startY){
 }
 
 function startGUI(){
-    var gui = new dat.GUI({ width: 300 });
+    gui = new dat.GUI({ width: 300 });
     gui.add(config, 'SHOW_MIDDLE_LOGO').name('Show middle logo');
     gui.add(config, 'SHOW_ANIMATED_LOGO').name('Show animated logo');
     gui.add(config, 'ASCENDING_LOGOS').name('Ascending logos');
@@ -85,10 +92,7 @@ function startGUI(){
     gui.add(config, 'TURN_AROUND').name('Logo turns around');
     gui.add(config, 'COLORFUL').name('Whiten background');
     gui.add(config, 'FLASHY').name('Flashy background');
-	gui.add(config, 'SENSITIVITY', 1, 40).name('Sensitivity').step(1);
-	
-    //gui.add(config, 'SCALE', { 'Chromatic' : 0, 'Major': 1, 'Minor': 2, 'Pentatonic': 3, 'Blues': 4}).name('Scale');
-    //if (isMobile()) gui.close();
+	gui.add(config, 'SENSITIVITY', 1, 35).name('Sensitivity').step(1);
 }
 
 function startMic(){

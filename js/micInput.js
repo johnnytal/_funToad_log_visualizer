@@ -79,11 +79,11 @@ function start_stream(stream){
 		 	middleLogo.frame = logoFrame;
 		 	
 		 	if (config.ASCENDING_LOGOS){
-		 		ascendLogos(largestFreq * (game.scale.width / 100), averageValue * 32);
+		 		ascendLogos(largestFreq * (game.scale.width / 120), averageValue * (game.scale.height / 20));
 		 	}
 		 	
 			if (config.DROPPING_LOGOS){
-		 		droppingLogos(largestFreq * (game.scale.width / 100), averageValue * 32);
+		 		droppingLogos(largestFreq * (game.scale.width / 120), averageValue * 32);
 		 	}
 		 }
 		 		
